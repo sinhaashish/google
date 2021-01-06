@@ -17,6 +17,7 @@ package dynamicprogramming;
   manner that the total weight of the items should not be greater than the capacity of the knapsack.
 */
 
+
 public class ZeroOneKnapsack {
 
   public static void main(String[] args) {
