@@ -1,6 +1,6 @@
 package dynamicprogramming;
 
-public class LowestCommonSubString {
+public class LongestCommonSubString {
 
   public static void main(String[] args) {
     String a = "abcplm";

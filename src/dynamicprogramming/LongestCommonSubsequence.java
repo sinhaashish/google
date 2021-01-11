@@ -1,6 +1,6 @@
 package dynamicprogramming;
 
-public class LowestCommonSubsequence {
+public class LongestCommonSubsequence {
 
   public static void main(String[] args) {
     String a = "abcplm";
