@@ -26,7 +26,10 @@ public class FourSidedView {
     tree.leftView(tree.root);
     System.out.println(" \n The right view of tree is ");
     tree.rightView(tree.root);
-
+    System.out.println(" \n The top view of tree is ");
+    tree.topView(tree.root);
+    System.out.println(" \n The bottom view of tree is ");
+    tree.bottomView(tree.root);
   }
 
 }

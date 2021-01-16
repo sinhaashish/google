@@ -6,7 +6,7 @@ package Tree;
 // that form the ends of the longest path are shaded (note that there is more t
 // han one path in each tree of length nine, but no path longer than nine nodes)
 
-public class DiameterOfTres {
+public class TreeProperties {
 
   public static void main(String args[]) {
     // creating a binary tree and entering the nodes
@@ -21,5 +21,13 @@ public class DiameterOfTres {
     System.out.println(
       "The diameter of given binary tree is : "
         + tree.diameter(tree.root));
+
+    /*To check if a tree is height-balanced, get the height of left and right subtrees.
+     Return true if difference between heights is not more than 1 and left and right subtrees
+      are balanced, otherwise return false.*/
+    System.out.println(
+      "Is the tree height balanced: "
+        + tree.isHeightBalanced(tree.root));
+
   }
 }

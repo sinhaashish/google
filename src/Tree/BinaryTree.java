@@ -1,9 +1,15 @@
 package Tree;
 
+import static javafx.scene.input.KeyCode.Q;
+
 import com.sun.org.apache.xerces.internal.impl.xpath.XPath.Step;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Stack;
+import java.util.TreeMap;
 import sun.reflect.generics.tree.Tree;
 
 public class BinaryTree {
@@ -193,6 +199,7 @@ public class BinaryTree {
     }
   }
 
+  //LRN
   void postOrder() {
     inOrder(root);
   }
@@ -206,24 +213,82 @@ public class BinaryTree {
     System.out.print(node.data + " ");
   }
 
-  void leftView( Node node ){
-    if( node == null) {
-      return ;
+  void zigzag() {
+    printZigZagTraversal(root);
+  }
+
+  void printZigZagTraversal(Node root) {
+
+    // if null then return
+    if (root == null) {
+      return;
     }
-    Queue< Node > q = new LinkedList<Node>();
+
+    // declare two stacks
+    Stack<Node> currentLevel = new Stack<>();
+    Stack<Node> nextLevel = new Stack<>();
+
+    // push the root
+    currentLevel.push(root);
+    boolean leftToRight = true;
+
+    // check if stack is empty
+    while (!currentLevel.isEmpty()) {
+
+      // pop out of stack
+      Node node = currentLevel.pop();
+
+      // print the data in it
+      System.out.print(node.data + " ");
+
+      // store data according to current
+      // order.
+      if (leftToRight) {
+        if (node.left != null) {
+          nextLevel.push(node.left);
+        }
+
+        if (node.right != null) {
+          nextLevel.push(node.right);
+        }
+      } else {
+        if (node.right != null) {
+          nextLevel.push(node.right);
+        }
+
+        if (node.left != null) {
+          nextLevel.push(node.left);
+        }
+      }
+
+      if (currentLevel.isEmpty()) {
+        leftToRight = !leftToRight;
+        Stack<Node> temp = currentLevel;
+        currentLevel = nextLevel;
+        nextLevel = temp;
+      }
+    }
+  }
+
+  void leftView(Node node) {
+    if (node == null) {
+      return;
+    }
+    Queue<Node> q = new LinkedList<Node>();
     q.add(node);
-    while(!q.isEmpty()){
+    while (!q.isEmpty()) {
       int size = q.size();
-      for ( int i = 1;i <= size; i++) {
+      for (int i = 1; i <= size; i++) {
         Node temp = q.poll();
         // Print the left most element at
         // the level
-        if (i == 1)
+        if (i == 1) {
           System.out.print(temp.data + " ");
-        if(temp.left != null){
+        }
+        if (temp.left != null) {
           q.add(temp.left);
         }
-        if(temp.right != null){
+        if (temp.right != null) {
           q.add(temp.right);
         }
       }
@@ -231,28 +296,192 @@ public class BinaryTree {
   }
 
 
-  void rightView( Node node ){
-    if( node == null) {
-      return ;
+  void rightView(Node node) {
+    if (node == null) {
+      return;
     }
-    Queue< Node > q = new LinkedList<Node>();
+    Queue<Node> q = new LinkedList<Node>();
     q.add(node);
-    while(!q.isEmpty()){
+    while (!q.isEmpty()) {
       int size = q.size();
-      for ( int i = 1;i <= size; i++) {
+      for (int i = 1; i <= size; i++) {
         Node temp = q.poll();
         // Print the left most element at
         // the level
-        if (i == size)
+        if (i == size) {
           System.out.print(temp.data + " ");
-        if(temp.left != null){
+        }
+        if (temp.left != null) {
           q.add(temp.left);
         }
-        if(temp.right != null){
+        if (temp.right != null) {
           q.add(temp.right);
         }
       }
     }
   }
+
+  public void topView(Node node) {
+    class QueueNode {
+
+      Node node;
+      int didtanceFromcentre;
+
+      public QueueNode(Node node, int didtanceFromcentre) {
+        this.node = node;
+        this.didtanceFromcentre = didtanceFromcentre;
+      }
+    }
+    Queue<QueueNode> q = new LinkedList<QueueNode>();
+    Map<Integer, Node> hs = new TreeMap<Integer, Node>();
+
+    if (root == null) {
+      return;
+    } else {
+      q.add(new QueueNode(root, 0));
+    }
+    while (!q.isEmpty()) {
+      QueueNode temp = q.poll();
+      if (!hs.containsKey(temp.didtanceFromcentre)) {
+        hs.put(temp.didtanceFromcentre, temp.node);
+      }
+      if (temp.node.left != null) {
+        q.add(new QueueNode(temp.node.left, temp.didtanceFromcentre - 1));
+      }
+      if (temp.node.right != null) {
+        q.add(new QueueNode(temp.node.right, temp.didtanceFromcentre + 1));
+      }
+    }
+    for (Entry<Integer, Node> entry : hs.entrySet()) {
+      System.out.print(entry.getValue().data + " ");
+    }
+  }
+
+
+  public void bottomView(Node node) {
+    class QueueNode {
+
+      Node node;
+      int didtanceFromcentre;
+
+      public QueueNode(Node node, int didtanceFromcentre) {
+        this.node = node;
+        this.didtanceFromcentre = didtanceFromcentre;
+      }
+    }
+    Queue<QueueNode> q = new LinkedList<QueueNode>();
+    Map<Integer, Node> hs = new TreeMap<Integer, Node>();
+
+    if (root == null) {
+      return;
+    } else {
+      q.add(new QueueNode(root, 0));
+    }
+    while (!q.isEmpty()) {
+      QueueNode temp = q.poll();
+      hs.put(temp.didtanceFromcentre, temp.node);
+      if (temp.node.left != null) {
+        q.add(new QueueNode(temp.node.left, temp.didtanceFromcentre - 1));
+      }
+      if (temp.node.right != null) {
+        q.add(new QueueNode(temp.node.right, temp.didtanceFromcentre + 1));
+      }
+    }
+    for (Entry<Integer, Node> entry : hs.entrySet()) {
+      System.out.print(entry.getValue().data + " ");
+    }
+  }
+
+  /// The boundary view
+
+  // A simple function to print leaf nodes of a binary tree
+  void printLeaves(Node node)
+  {
+    if (node == null)
+      return;
+
+    printLeaves(node.left);
+    // Print it if it is a leaf node
+    if (node.left == null && node.right == null)
+      System.out.print(node.data + " ");
+    printLeaves(node.right);
+  }
+
+  // A function to print all left boundary nodes, except a leaf node.
+  // Print the nodes in TOP DOWN manner
+  void printBoundaryLeft(Node node)
+  {
+    if (node == null)
+      return;
+
+    if (node.left != null) {
+      // to ensure top down order, print the node
+      // before calling itself for left subtree
+      System.out.print(node.data + " ");
+      printBoundaryLeft(node.left);
+    }
+    else if (node.right != null) {
+      System.out.print(node.data + " ");
+      printBoundaryLeft(node.right);
+    }
+
+    // do nothing if it is a leaf node, this way we avoid
+    // duplicates in output
+  }
+
+  // A function to print all right boundary nodes, except a leaf node
+  // Print the nodes in BOTTOM UP manner
+  void printBoundaryRight(Node node)
+  {
+    if (node == null)
+      return;
+
+    if (node.right != null) {
+      // to ensure bottom up order, first call for right
+      // subtree, then print this node
+      printBoundaryRight(node.right);
+      System.out.print(node.data + " ");
+    }
+    else if (node.left != null) {
+      printBoundaryRight(node.left);
+      System.out.print(node.data + " ");
+    }
+    // do nothing if it is a leaf node, this way we avoid
+    // duplicates in output
+  }
+
+  // A function to do boundary traversal of a given binary tree
+  void printBoundary(Node node)
+  {
+    if (node == null)
+      return;
+
+    System.out.print(node.data + " ");
+
+    // Print the left boundary in top-down manner.
+    printBoundaryLeft(node.left);
+
+    // Print all leaf nodes
+    printLeaves(node.left);
+    printLeaves(node.right);
+
+    // Print the right boundary in bottom-up manner
+    printBoundaryRight(node.right);
+  }
+
+  public boolean isHeightBalanced(Node node) {
+    int lh, rh;
+    if (node == null) {
+      return true;
+    }
+    lh = height(node.left);
+    rh = height(node.right);
+
+    if (Math.abs(lh - rh) <= 1 && isHeightBalanced(node.left) && isHeightBalanced(node.right)) {
+      return true;
+    }
+    return false;
+  }
+
 
 }
